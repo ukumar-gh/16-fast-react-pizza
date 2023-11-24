@@ -5,16 +5,15 @@ import CartItem from './CartItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearCart, getCart } from './cartSlice';
 import { getUser } from '../user/userSlice';
-
+import EmptyCart from './EmptyCart';
 function Cart() {
   const dispatch = useDispatch();
 
   const cart = useSelector(getCart);
   const username = useSelector(getUser);
 
-  function handleClear() {
-    dispatch(clearCart());
-  }
+  if (!cart.length) return <EmptyCart />;
+
   return (
     <div className="px-4 py-3">
       <LinkButton to="/menu">&larr; Back to menu</LinkButton>
@@ -30,7 +29,7 @@ function Cart() {
         <Button type="primary" to="/order/new">
           Order pizzas
         </Button>
-        <Button type="secondary" onClick={handleClear}>
+        <Button type="secondary" onClick={() => dispatch(clearCart())}>
           Clear cart
         </Button>
       </div>
